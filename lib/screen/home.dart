@@ -4,7 +4,6 @@ import 'package:impostorapp/component/orange_button.dart';
 import 'package:impostorapp/component/text_input.dart';
 import 'package:impostorapp/utils/colors.dart';
 import 'package:impostorapp/utils/sizes.dart';
-import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
