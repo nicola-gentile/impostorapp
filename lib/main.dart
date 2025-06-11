@@ -28,8 +28,17 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeScreen(),
-        '/join': (context) => const JoinRoomScreen(username: ''),
-        '/create': (context) => const CreateRoomScreen(username: ''),
+        '/join': (context) => JoinRoomScreen(),
+        '/create': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+          print('args: $args');
+          return CreateRoomScreen(
+            userName: args['userName'] ?? '',
+            ownerId: BigInt.from(args['ownerId'] ?? 0),
+            roomCode: args['roomCode'] ?? '',
+          );
+
+        },
         // '/waiting': (context) => const WaitingRoomScreen(),
       },
     );

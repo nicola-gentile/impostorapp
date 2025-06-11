@@ -1,18 +1,11 @@
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:impostorapp/network/service.dart';
 import 'dart:convert';
 
-class ApiService {
-  final String baseUrl;
-
-  ApiService() : baseUrl = dotenv.env['API_BASE_URL'] ?? '' {
-    if (baseUrl.isEmpty) {
-      throw Exception('API_BASE_URL is not set in .env file');
-    }
-  }
+class ApiService extends Service{
 
   Future<http.Response> createRoom(String ownerName) async {
-    final url = Uri.parse('$baseUrl/room');
+    final url = Uri.parse('${Service.baseUrl}/room');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -21,7 +14,7 @@ class ApiService {
   }
 
   Future<http.Response> createUser(String userName, String roomCode) async {
-    final url = Uri.parse('$baseUrl/user');
+    final url = Uri.parse('${Service.baseUrl}/user');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -33,7 +26,7 @@ class ApiService {
   }
 
   Future<http.Response> start(BigInt ownerId) async {
-    final url = Uri.parse('$baseUrl/start');
+    final url = Uri.parse('${Service.baseUrl}/start');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -42,7 +35,7 @@ class ApiService {
   }
 
   Future<http.Response> end(BigInt ownerId) async {
-    final url = Uri.parse('$baseUrl/end');
+    final url = Uri.parse('${Service.baseUrl}/end');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -51,15 +44,12 @@ class ApiService {
   }
 
   Future<http.Response> close(BigInt ownerId) async {
-    final url = Uri.parse('$baseUrl/close');
+    final url = Uri.parse('${Service.baseUrl}/close');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'owner_id': ownerId.toString()}),
     );
   }
-
-
-
 
 }

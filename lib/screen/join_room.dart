@@ -8,17 +8,14 @@ import 'package:impostorapp/utils/sizes.dart';
 
 class JoinRoomScreen extends StatelessWidget {
 
-  final String username;
-  const JoinRoomScreen({
-    super.key,
-    required this.username
-  });
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final userName = args['userName'] ?? '';
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(),
+      appBar: TopBar(userName: userName),
       body: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(

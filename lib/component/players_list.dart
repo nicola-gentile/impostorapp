@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:impostorapp/utils/colors.dart';
 
 class PlayersList extends StatelessWidget {
   final List<String> names;

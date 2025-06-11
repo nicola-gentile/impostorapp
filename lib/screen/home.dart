@@ -1,22 +1,40 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:impostorapp/component/error_popup.dart';
 import 'package:impostorapp/component/orange_button.dart';
 import 'package:impostorapp/component/text_input.dart';
 import 'package:impostorapp/utils/colors.dart';
 import 'package:impostorapp/utils/sizes.dart';
+import 'package:impostorapp/network/api_service.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  void create_room(String username, BuildContext context) {
-    if (username.isEmpty) {
+  void create_room(String userName, BuildContext context) {
+    if (userName.isEmpty) {
       showErrorPopup(context, 'type a name');
     } else {
-      Navigator.pushNamed(
-        context,
-        '/create',
-        arguments: {'username' : username }, // Replace with actual player name
-      );
+      final apiService = ApiService();
+      apiService.createRoom(userName).then((response) {
+        if (response.statusCode == 200) {
+          final body = jsonDecode(response.body); // Assuming the response body contains the room code
+          final roomCode = body['room_code'] as String? ?? '';
+          final ownerId = body['owner_id'] as int? ?? 0; // Assuming the response body contains the owner ID
+          final roomId = body['room_id'] as int? ?? 0; // Assuming the response body contains the room ID
+          Navigator.pushNamed(
+            context,
+            '/create',
+            arguments: {'userName': userName, 'roomCode': roomCode, 'ownerId': ownerId, 'roomId': roomId},
+          );
+        } else {
+          final body = jsonDecode(response.body);
+          final details = body['details'] as String? ?? 'Unknown error';
+          showErrorPopup(context, 'Failed to create room: $details');
+        }
+      }).catchError((error) {
+        showErrorPopup(context, 'Error creating room: $error');
+      });
     }
   }
 

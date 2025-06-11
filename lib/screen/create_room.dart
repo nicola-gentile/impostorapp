@@ -3,23 +3,107 @@ import 'package:impostorapp/component/orange_button.dart';
 import 'package:impostorapp/component/players_list.dart';
 import 'package:impostorapp/component/qr_button.dart';
 import 'package:impostorapp/component/top_bar.dart';
+import 'package:impostorapp/component/word_popup.dart';
+import 'package:impostorapp/network/sse_service.dart';
 import 'package:impostorapp/utils/sizes.dart';
+import 'package:impostorapp/network/api_service.dart';
+import 'package:impostorapp/component/error_popup.dart';
+import 'dart:convert';
 
+class CreateRoomScreen extends StatefulWidget {
 
-class CreateRoomScreen extends StatelessWidget {
+  final String userName;
+  final BigInt ownerId;
+  final String roomCode;
 
-  final String username;
-  const CreateRoomScreen({
+  CreateRoomScreen({
     super.key,
-    required this.username
+    required this.userName,
+    required this.ownerId,
+    required this.roomCode,
   });
 
   @override
+  State<CreateRoomScreen> createState() => _CreateRoomScreenState();
+
+}
+
+class _CreateRoomScreenState extends State<CreateRoomScreen> {
+
+  final ApiService _apiService = ApiService();
+  final SseService _sseService = SseService();
+
+  @override
+  void initState() {
+    super.initState();
+    print('subscribing sse connection');
+    _sseService.connectSseOwner(
+      widget.ownerId,
+      onData: (res) {},
+      onError: (err) { _sseService.disconnect(); }
+      ).listen((res) {
+        print(res.data);
+        final data = res.data;
+        if (data == null) {
+          return;
+        }
+        switch (data['type']) {
+          case 'joined': 
+            addPlayer(data['user_name']);
+            break;
+          case 'left':
+            removePlayer(data['user_name']);
+            break;
+          case 'start':
+            showWordPopup(context, data['word']);
+            break;
+          case 'end':
+          case 'stop':
+            Navigator.of(context).pop();
+            break;
+          default:
+        };
+      },
+      onError: (error) { print(error); },
+      onDone: () { print('done'); }
+      );
+
+  }
+
+  List<String> players = [];
+
+  void addPlayer(String playerName) {
+    setState(() {
+      players.add(playerName);
+    });
+  }
+
+  void removePlayer(String playerName) {
+    setState(() {
+      players.remove(playerName);
+    });
+  }
+
+  @override
+  void dispose() async {
+    print('disposing state');
+    _apiService.close(widget.ownerId)
+      .then((res) {
+        print(res.body);
+      });
+    _sseService.disconnect();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var players = ["ile", "rob", "dav", "nic", "bis", "fra", "ale", "rug", "mar", "pol", "ser", "don"];
+    var userName = widget.userName;
+    var roomCode = widget.roomCode;
+    var ownerId = widget.ownerId;
+    
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: TopBar(),
+      appBar: TopBar(userName: userName),
       body: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
@@ -30,7 +114,7 @@ class CreateRoomScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'ABCD1234',
+              roomCode,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 36),
             ),
@@ -46,7 +130,18 @@ class CreateRoomScreen extends StatelessWidget {
             SizedBox(height: componentsInterspace),
             OrangeButton(
               label: ' Start game',
-              onPressed: () {},
+              onPressed: () {
+                _apiService
+                  .start(ownerId)
+                  .then((response) {
+                    if (response.statusCode != 200) {
+                      print(response.body);
+                      var body = jsonDecode(response.body);
+                      var details = body['detail'] as String? ?? 'Unknown error';
+                      showErrorPopup(context, details);
+                    } 
+                  });
+              },
               icon: Icons.gamepad
             ),
             const SizedBox(height: componentsInterspace),

@@ -3,17 +3,25 @@ import 'package:impostorapp/utils/colors.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
+  final String userName;
+  final VoidCallback? onBackPressed;
+  TopBar({super.key, required this.userName, this.onBackPressed});
+
   @override
   Widget build(BuildContext context) {
-    final ctx = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return AppBar(
       backgroundColor: primaryColor,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.black87),
-        onPressed: () => Navigator.pop(context),
+        onPressed: () {
+          if (onBackPressed != null) {
+            onBackPressed!();
+          }
+          Navigator.pop(context);
+        },
       ),
       title: Text(
-        ctx['username'],
+        userName,
         style: const TextStyle(
           color: Colors.black87,
           fontWeight: FontWeight.w600,
