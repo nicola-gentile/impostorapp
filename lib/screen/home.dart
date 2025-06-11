@@ -7,14 +7,19 @@ import 'package:impostorapp/component/text_input.dart';
 import 'package:impostorapp/utils/colors.dart';
 import 'package:impostorapp/utils/sizes.dart';
 import 'package:impostorapp/network/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  void create_room(String userName, BuildContext context) {
+  void createRoom(String userName, BuildContext context) {
     if (userName.isEmpty) {
       showErrorPopup(context, 'type a name');
     } else {
+      SharedPreferences.getInstance()
+        .then((pref) {
+          pref.setString('name', userName);
+        });
       final apiService = ApiService();
       apiService.createRoom(userName).then((response) {
         if (response.statusCode == 200) {
@@ -38,10 +43,14 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  void join_room(String userName, BuildContext context) {
+  void joinRoom(String userName, BuildContext context) {
     if (userName.isEmpty) {
       showErrorPopup(context, 'type a name');
     } else {
+      SharedPreferences.getInstance()
+        .then((pref) {
+          pref.setString('name', userName);
+        });
       Navigator.pushNamed(
         context,
         '/join',
@@ -52,7 +61,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textInput = TextInput(hintText: 'Player name',);
+    var textInput = TextInput(hintText: 'Player name', );
+    SharedPreferences.getInstance()
+      .then((pref) {
+        final lastName = pref.getString('name');
+        if(lastName != null) {
+          textInput.text = lastName;
+        }
+      });
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade100,
@@ -87,13 +103,13 @@ class HomeScreen extends StatelessWidget {
               OrangeButton(
                 icon: Icons.group,
                 label: ' Join Room',
-                onPressed: () => join_room(textInput.text, context)
+                onPressed: () => joinRoom(textInput.text, context)
               ),
               const SizedBox(height: componentsInterspace),
               OrangeButton(
                 icon: Icons.add,
                 label: 'Create Room',
-                onPressed: () => create_room(textInput.text, context),
+                onPressed: () => createRoom(textInput.text, context),
               ),
               const SizedBox(height: componentsInterspace),
             ],

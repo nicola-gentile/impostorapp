@@ -5,7 +5,11 @@ class TextInput extends StatelessWidget {
   final String hintText;
   final TextEditingController _controller = TextEditingController();
 
-  get text => _controller.text;
+  String get text => _controller.text;
+ 
+  set text(String newText) {
+    _controller.text = newText;
+  }
 
   TextInput({
     super.key,
