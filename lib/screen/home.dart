@@ -29,23 +29,23 @@ class HomeScreen extends StatelessWidget {
           );
         } else {
           final body = jsonDecode(response.body);
-          final details = body['details'] as String? ?? 'Unknown error';
+          final details = body['detail'] as String? ?? 'Unknown error';
           showErrorPopup(context, 'Failed to create room: $details');
         }
       }).catchError((error) {
-        showErrorPopup(context, 'Error creating room: $error');
+        showErrorPopup(context, 'Error creating room: check for internet connection and retry');
       });
     }
   }
 
-  void join_room(String username, BuildContext context) {
-    if (username.isEmpty) {
+  void join_room(String userName, BuildContext context) {
+    if (userName.isEmpty) {
       showErrorPopup(context, 'type a name');
     } else {
       Navigator.pushNamed(
         context,
         '/join',
-        arguments: {'username' : username }, // Replace with actual player name
+        arguments: {'userName' : userName }, // Replace with actual player name
       );
     }
   }

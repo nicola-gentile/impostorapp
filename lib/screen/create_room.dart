@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:impostorapp/component/orange_button.dart';
 import 'package:impostorapp/component/players_list.dart';
 import 'package:impostorapp/component/qr_button.dart';
+import 'package:impostorapp/component/qr_popup.dart';
 import 'package:impostorapp/component/top_bar.dart';
 import 'package:impostorapp/component/word_popup.dart';
 import 'package:impostorapp/network/sse_service.dart';
+import 'package:impostorapp/screen/word.dart';
 import 'package:impostorapp/utils/sizes.dart';
 import 'package:impostorapp/network/api_service.dart';
 import 'package:impostorapp/component/error_popup.dart';
@@ -13,7 +15,7 @@ import 'dart:convert';
 class CreateRoomScreen extends StatefulWidget {
 
   final String userName;
-  final BigInt ownerId;
+  final int ownerId;
   final String roomCode;
 
   CreateRoomScreen({
@@ -55,14 +57,16 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             removePlayer(data['user_name']);
             break;
           case 'start':
-            showWordPopup(context, data['word']);
-            break;
-          case 'end':
-          case 'stop':
-            Navigator.of(context).pop();
+            if(context.mounted) {
+              Navigator.pushNamed(
+                context,
+                '/word-owner',
+                arguments: { 'ownerId' : widget.ownerId, 'userName': widget.userName, 'word': data['word'] },
+              );
+            }
             break;
           default:
-        };
+        }
       },
       onError: (error) { print(error); },
       onDone: () { print('done'); }
@@ -147,7 +151,9 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             const SizedBox(height: componentsInterspace),
             QrButton(
               label: 'show QR code',
-              onPressed: () {},
+              onPressed: () { 
+                showQRPopup(context, roomCode); 
+              },
             ),
             const SizedBox(height: componentsInterspace),
           ],

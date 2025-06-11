@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:impostorapp/network/api_service.dart';
 import 'package:impostorapp/screen/home.dart';
 import 'package:impostorapp/screen/join_room.dart';
 import 'package:impostorapp/screen/create_room.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:impostorapp/screen/word.dart';
+import 'package:impostorapp/screen/word_owner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
@@ -29,12 +32,13 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomeScreen(),
         '/join': (context) => JoinRoomScreen(),
+        '/word': (context) => WordScreen(),
+        '/word-owner': (context) => WordOwnerScreen(),
         '/create': (context) {
           final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-          print('args: $args');
           return CreateRoomScreen(
             userName: args['userName'] ?? '',
-            ownerId: BigInt.from(args['ownerId'] ?? 0),
+            ownerId: args['ownerId'] ?? -1,
             roomCode: args['roomCode'] ?? '',
           );
 

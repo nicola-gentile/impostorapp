@@ -25,30 +25,30 @@ class ApiService extends Service{
     );
   }
 
-  Future<http.Response> start(BigInt ownerId) async {
+  Future<http.Response> start(int ownerId) async {
     final url = Uri.parse('${Service.baseUrl}/start');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'owner_id': ownerId.toString()}),
+      body: jsonEncode({'owner_id': ownerId}),
     );
   }
 
-  Future<http.Response> end(BigInt ownerId) async {
+  Future<http.Response> end(int ownerId) async {
     final url = Uri.parse('${Service.baseUrl}/end');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'owner_id': ownerId.toString()}),
+      body: jsonEncode({'owner_id': ownerId}),
     );
   }
 
-  Future<http.Response> close(BigInt ownerId) async {
+  Future<http.Response> close(int ownerId) async {
     final url = Uri.parse('${Service.baseUrl}/close');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'owner_id': ownerId.toString()}),
+      body: jsonEncode({'owner_id': ownerId}),
     );
   }
 

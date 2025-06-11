@@ -27,13 +27,13 @@ class SseService extends Service {
     return _client.connect('main', request);
   }
 
-  Stream<SSEResponse> connectSseOwner(BigInt ownerId, {required Function(SSEResponse) onData, Function(String)? onError, VoidCallback? onDone}) {
+  Stream<SSEResponse> connectSseOwner(int ownerId, {required Function(SSEResponse) onData, Function(String)? onError, VoidCallback? onDone}) {
     final url = Uri.parse('${Service.baseUrl}/sse/owner/$ownerId');
     return _connectSse(url.toString(), onData: onData, onError: onError, onDone: onDone);    
   }
 
-  Stream<SSEResponse> connectSsePlayer(BigInt userId, {required Function(SSEResponse) onData, Function(String)? onError, VoidCallback? onDone}) {
-    final url = Uri.parse('${Service.baseUrl}/player/$userId');
+  Stream<SSEResponse> connectSsePlayer(int userId, {required Function(SSEResponse) onData, Function(String)? onError, VoidCallback? onDone}) {
+    final url = Uri.parse('${Service.baseUrl}/sse/user/$userId');
     return _connectSse(url.toString(), onData: onData, onError: onError, onDone: onDone);
   }
 
