@@ -22,6 +22,9 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v1
 
+      - name: create .env
+        run: touch .env && echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" > .env
+
       - name: Get Flutter packages
         run: flutter pub get
       

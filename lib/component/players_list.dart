@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PlayersList extends StatelessWidget {
   final List<String> names;
 
-  const PlayersList({Key? key, required this.names}) : super(key: key);
+  const PlayersList({super.key, required this.names});
 
   @override
   Widget build(BuildContext context) {

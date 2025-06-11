@@ -5,7 +5,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
   final String userName;
   final VoidCallback? onBackPressed;
-  TopBar({super.key, required this.userName, this.onBackPressed});
+  const TopBar({super.key, required this.userName, this.onBackPressed});
 
   @override
   Widget build(BuildContext context) {
