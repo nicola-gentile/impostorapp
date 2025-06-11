@@ -26,11 +26,11 @@ class CreateRoomScreen extends StatefulWidget {
   });
 
   @override
-  State<CreateRoomScreen> createState() => _CreateRoomScreenState();
+  State<CreateRoomScreen> createState() => CreateRoomScreenState();
 
 }
 
-class _CreateRoomScreenState extends State<CreateRoomScreen> {
+class CreateRoomScreenState extends State<CreateRoomScreen> {
 
   final ApiService _apiService = ApiService();
   final SseService _sseService = SseService();
@@ -134,7 +134,6 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                   .start(ownerId)
                   .then((response) {
                     if (response.statusCode != 200) {
-                      print(response.body);
                       var body = jsonDecode(response.body);
                       var details = body['detail'] as String? ?? 'Unknown error';
                       showErrorPopup(context, details);
