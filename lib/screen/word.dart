@@ -49,7 +49,6 @@ void initState() {
       .listen((res) {
         final data = res.data;
         if (data != null) {
-          print('data: $data');
           switch (data['type']) {
             case 'start':
               setWord(data['word']);
@@ -74,7 +73,10 @@ void initState() {
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final userName = args['userName'] ?? '';
     return Scaffold(
-      appBar: TopBar(userName: userName),
+      appBar: TopBar(
+        userName: userName,
+        onBackPressed: () => sseService.disconnect(),
+      ),
       body: Center(
         child: Text(word, style: TextStyle(fontSize: 30),),
       )

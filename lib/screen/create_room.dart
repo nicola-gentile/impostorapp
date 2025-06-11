@@ -18,7 +18,7 @@ class CreateRoomScreen extends StatefulWidget {
   final int ownerId;
   final String roomCode;
 
-  CreateRoomScreen({
+  const CreateRoomScreen({
     super.key,
     required this.userName,
     required this.ownerId,
@@ -38,13 +38,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   @override
   void initState() {
     super.initState();
-    print('subscribing sse connection');
     _sseService.connectSseOwner(
       widget.ownerId,
       onData: (res) {},
       onError: (err) { _sseService.disconnect(); }
       ).listen((res) {
-        print(res.data);
         final data = res.data;
         if (data == null) {
           return;
@@ -68,8 +66,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
           default:
         }
       },
-      onError: (error) { print(error); },
-      onDone: () { print('done'); }
+      onError: (_) { },
+      onDone: () { }
       );
 
   }
@@ -90,11 +88,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
 
   @override
   void dispose() async {
-    print('disposing state');
-    _apiService.close(widget.ownerId)
-      .then((res) {
-        print(res.body);
-      });
+    _apiService.close(widget.ownerId);
     _sseService.disconnect();
     super.dispose();
   }
@@ -107,6 +101,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
     
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
+      resizeToAvoidBottomInset: false,
       appBar: TopBar(userName: userName),
       body: Container(
         padding: const EdgeInsets.all(24),

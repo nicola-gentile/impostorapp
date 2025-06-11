@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:impostorapp/network/api_service.dart';
 import 'package:impostorapp/screen/home.dart';
 import 'package:impostorapp/screen/join_room.dart';
 import 'package:impostorapp/screen/create_room.dart';

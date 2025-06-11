@@ -54,8 +54,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var textInput = TextInput(hintText: 'Player name',);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade100,
       body: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
@@ -65,6 +67,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const SizedBox(height: 24),
               Row(
                 children: const [
                   Icon(Icons.videogame_asset, color: primaryColor, size:37),

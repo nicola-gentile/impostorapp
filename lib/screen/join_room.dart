@@ -12,6 +12,8 @@ import 'package:impostorapp/utils/sizes.dart';
 
 
 class JoinRoomScreen extends StatelessWidget {
+  const JoinRoomScreen({super.key});
+
 
 
   @override
@@ -20,6 +22,7 @@ class JoinRoomScreen extends StatelessWidget {
     final userName = args['userName'] ?? '';
     final textInput = TextInput(hintText: 'Room code');
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade100,
       appBar: TopBar(userName: userName),
       body: Container(
@@ -83,6 +86,7 @@ void join(BuildContext context, String userName, String roomCode) {
     }
     else {
       if(context.mounted) {
+        Future.delayed(Duration(seconds: 1));
         Navigator.pushNamed(
           context, 
           '/word',
