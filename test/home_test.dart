@@ -45,7 +45,7 @@ void main() {
   testWidgets('shows error when name is empty on Join Room', (WidgetTester tester) async {
     await pumpHomeScreen(tester);
     await tester.tap(find.text(' Join Room'));
-    await tester.pump(); // allow error popup to render
+    await tester.pump();
 
     expect(find.textContaining('type a name'), findsOneWidget);
   });
@@ -113,7 +113,6 @@ void main() {
   });
 }
 
-/// HomeScreen version that accepts custom ApiService for testing
 class HomeScreenWithApiOverride extends StatelessWidget {
   final ApiService apiService;
   const HomeScreenWithApiOverride({super.key, required this.apiService});
