@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
           showErrorPopup(context, 'Failed to create room: $details');
         }
       }).catchError((error) {
-        showErrorPopup(context, error);
+        showErrorPopup(context, 'Error creating room: check for internet connection and retry');
       });
     }
   }
