@@ -33,6 +33,7 @@ void initState() {
   super.initState();
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
+    if(!mounted) return;
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final userId = args['userId'] ?? '';
 

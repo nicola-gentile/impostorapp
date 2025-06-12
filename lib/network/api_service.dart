@@ -15,6 +15,7 @@ class ApiService extends Service{
 
   Future<http.Response> createUser(String userName, String roomCode) async {
     final url = Uri.parse('${Service.baseUrl}/user');
+    print(url);
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
