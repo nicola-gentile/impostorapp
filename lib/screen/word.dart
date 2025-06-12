@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:impostorapp/component/error_popup.dart';
 import 'package:impostorapp/component/top_bar.dart';
 import 'package:impostorapp/network/sse_service.dart';
 
@@ -61,6 +62,7 @@ void initState() {
               sseService.disconnect();
               if(context.mounted) {
                 Navigator.pop(context);
+                showErrorPopup(context, 'room was closed');
               }
           }
         }
