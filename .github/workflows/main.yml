@@ -23,7 +23,7 @@ jobs:
         uses: subosito/flutter-action@v1
 
       - name: create .env
-        run: touch .env && echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" > .env
+        run: touch .env && echo SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }} > .env
 
       - name: echo .env
         run: cat .env
