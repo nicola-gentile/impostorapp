@@ -25,6 +25,9 @@ jobs:
       - name: create .env
         run: touch .env && echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" > .env
 
+      - name: echo .env
+        run: cat .env
+
       - name: Get Flutter packages
         run: flutter pub get
       
